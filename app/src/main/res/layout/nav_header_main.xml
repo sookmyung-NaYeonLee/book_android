@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="@drawable/side_nav_bar"
+    android:background="@color/colorPoint"
     android:gravity="bottom"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -12,24 +12,61 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/nav_header_desc"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_imageView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@mipmap/ic_launcher_round" />
 
     <TextView
+        android:id="@+id/userName_textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:layout_marginBottom="@dimen/nav_text_margin"
         android:text="@string/nav_header_title"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:textColor="@color/colorMain"
+        android:textStyle="bold"
+        android:textSize="16sp"/>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/basket_cnt_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/nav_header_subtitle" />
+        android:text="바구니 3"
+        android:textColor="@color/colorMain" />
+
+    <TextView
+        android:id="@+id/bookshelf_cnt_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="내 책장 10"
+        android:textColor="@color/colorMain" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/nav_header_btn_margin">
+        <TextView
+            android:id="@+id/logout_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_logout"
+            android:textSize="@dimen/nav_header_btn_size"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="|"
+            android:layout_marginStart="@dimen/nav_header_text_margin"
+            android:layout_marginEnd="@dimen/nav_header_text_margin"/>
+
+        <TextView
+            android:id="@+id/withdrawal_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_withdrawal"
+            android:textSize="@dimen/nav_header_btn_size"/>
+    </LinearLayout>
 </LinearLayout>

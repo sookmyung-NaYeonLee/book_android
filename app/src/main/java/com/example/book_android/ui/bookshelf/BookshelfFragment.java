@@ -1,4 +1,4 @@
-package com.example.book_android.ui.gallery;
+package com.example.book_android.ui.bookshelf;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.book_android.R;
 
-public class GalleryFragment extends Fragment {
+public class BookshelfFragment extends Fragment {
 
-    private GalleryViewModel galleryViewModel;
+    private BookshelfViewModel BookshelfViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel =
-                ViewModelProviders.of(this).get(GalleryViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_gallery, container, false);
-        final TextView textView = root.findViewById(R.id.text_gallery);
-        galleryViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        BookshelfViewModel =
+                ViewModelProviders.of(this).get(BookshelfViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_bookshelf, container, false);
+        final TextView textView = root.findViewById(R.id.text_bookshelf);
+        BookshelfViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

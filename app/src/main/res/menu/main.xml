@@ -3,13 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_search"
+        android:icon="@android:drawable/ic_menu_search"
         android:title="@string/action_search"
-        android:icon="@drawable/search_icon"
         app:showAsAction="always"
-        app:actionViewClass="android.widget.SearchView"/>
+        app:itemIconTint="@color/colorPoint"/>
+    <!--
     <item
         android:id="@+id/action_image"
+        android:icon="@android:drawable/ic_menu_camera"
         android:title="@string/action_image"
-        android:icon="@drawable/search_icon"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
+    -->
 </menu>

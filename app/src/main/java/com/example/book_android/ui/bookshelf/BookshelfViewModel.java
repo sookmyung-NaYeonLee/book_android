@@ -1,16 +1,16 @@
-package com.example.book_android.ui.slideshow;
+package com.example.book_android.ui.bookshelf;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class SlideshowViewModel extends ViewModel {
+public class BookshelfViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public SlideshowViewModel() {
+    public BookshelfViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is slideshow fragment");
+        mText.setValue("This is bookshelf fragment");
     }
 
     public LiveData<String> getText() {

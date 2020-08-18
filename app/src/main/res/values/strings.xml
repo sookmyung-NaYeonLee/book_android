@@ -4,12 +4,20 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_search">Search</string>
     <string name="action_image">Image</string>
 
+    // menu
     <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_bookshelf">내 책장</string>
+    <string name="menu_basket">바구니</string>
+    <string name="menu_logout">로그아웃</string>
+    <string name="menu_withdrawal">회원탈퇴</string>
+
+    // MainActivity
+    <string name="search_hint">도서명으로 검색하세요.</string>
+
+    // 카카오로그인
+    <string name="kakao_app_key">66585e9795a5b04f09305038a8072150</string>
 </resources>
