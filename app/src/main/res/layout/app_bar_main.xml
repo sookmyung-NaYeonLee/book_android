@@ -17,6 +17,15 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorMain"
             app:popupTheme="@style/AppTheme.PopupOverlay">
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Toolbar Title"
+                android:textColor="@color/colorPoint"
+                android:textSize="@dimen/toolbar_title_size"
+                android:textStyle="bold"
+                android:layout_gravity="center" />
             <EditText
                 android:id="@+id/search_edittext"
                 android:layout_width="match_parent"
@@ -24,6 +33,7 @@
                 android:background="@color/colorWhite"
                 android:textColor="@color/colorBlack"
                 android:hint="@string/search_hint"
+                android:inputType="textNoSuggestions|textVisiblePassword"
                 android:textColorHint="#D5D5D5"
                 android:singleLine="true"
                 android:imeOptions="actionSearch" />

@@ -8,27 +8,21 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.book_android.ui.basket.BasketFragment;
-import com.example.book_android.ui.bookshelf.BookshelfFragment;
-import com.example.book_android.ui.home.HomeFragment;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+
 import com.google.android.material.navigation.NavigationView;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.kakao.usermgmt.callback.UnLinkResponseCallback;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.view.GravityCompat;
-import androidx.fragment.app.Fragment;
+
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -43,6 +37,12 @@ public class MainActivity extends AppCompatActivity {
     private View headerView;
     private DrawerLayout drawer;
     private NavigationView navigationView;
+    private ActionBar ab;
+    private EditText searchEdit;
+    private TextView toolbarTitle;
+    private MenuItem searchBtn;
+
+    private int isHomeFirst = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +59,13 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_home, R.id.nav_bookshelf, R.id.nav_basket)
                 .setDrawerLayout(drawer)
                 .build();
-        ActionBar ab = getSupportActionBar();
+        ab = getSupportActionBar();
         ab.setDisplayShowTitleEnabled(false);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
         headerView = navigationView.getHeaderView(0);
+
         init();
     }
 
@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        searchBtn = menu.findItem(R.id.action_search);
         /*
         // 검색 버튼 클릭 시 searchview 길이 꽉차게 늘려줌
         SearchView searchView = (SearchView)menu.findItem(R.id.action_search).getActionView();
@@ -92,6 +93,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init(){
+        searchEdit = findViewById(R.id.search_edittext);
+        toolbarTitle = findViewById(R.id.toolbar_title);
+        toolbarTitle.setVisibility(View.GONE);
         setUserData();
         setNavHeaderListener();
     }
@@ -177,5 +181,23 @@ public class MainActivity extends AppCompatActivity {
                 redirectLoginActivity();
             }
         });
+    }
+
+    public void setToolbarTitle(String title){
+        toolbarTitle.setVisibility(View.VISIBLE);
+        toolbarTitle.setText(title);
+        searchEdit.setVisibility(View.GONE);
+        searchBtn.setVisible(false);
+    }
+
+    public void setToolbarEditText(){
+        if(isHomeFirst == 0) {
+            isHomeFirst = 1;
+        }
+        else {
+            toolbarTitle.setVisibility(View.GONE);
+            searchEdit.setVisibility(View.VISIBLE);
+            searchBtn.setVisible(true);
+        }
     }
 }

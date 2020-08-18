@@ -33,14 +33,14 @@
         android:id="@+id/basket_cnt_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="바구니 3"
+        android:text="찜 3"
         android:textColor="@color/colorMain" />
 
     <TextView
         android:id="@+id/bookshelf_cnt_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="내 책장 10"
+        android:text="나만의 책장 10"
         android:textColor="@color/colorMain" />
 
     <LinearLayout
