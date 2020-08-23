@@ -68,7 +68,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     HomeAdapter(ArrayList<HomeItem> list){
         mData = list;
-        notifyDataSetChanged();
     }
 
     // onCreateViewHolder() - 아이템 뷰를 위한 뷰홀더 객체 생성하여 리턴.
