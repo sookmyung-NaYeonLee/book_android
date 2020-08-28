@@ -76,7 +76,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull BasketAdapter.ViewHolder holder, int position) {
-
+        // TODO: 2020/08/27  데이터 연결 시켜야함
     }
 
     @Override
