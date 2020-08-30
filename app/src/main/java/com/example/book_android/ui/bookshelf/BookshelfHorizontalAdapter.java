@@ -24,6 +24,16 @@ public class BookshelfHorizontalAdapter extends RecyclerView.Adapter<BookshelfHo
         this.mData = list;
     }
 
+    private OnRecordBtnClickListener mListener = null ;
+
+    public interface OnRecordBtnClickListener {
+        void onRecordBtnClick(View v, int position, BookshelfItem item) ;
+    }
+
+    public void setOnRecordBtnClickListener(OnRecordBtnClickListener listener) {
+        this.mListener = listener ;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView bookImg;
         TextView recordBtn;
@@ -35,7 +45,11 @@ public class BookshelfHorizontalAdapter extends RecyclerView.Adapter<BookshelfHo
             recordBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //todo 기록하기 버튼 리스너 구현
+                    int pos = getAdapterPosition();
+                    if(pos != RecyclerView.NO_POSITION){
+                        BookshelfItem item = mData.get(pos);
+                        mListener.onRecordBtnClick(view, pos, item);
+                    }
                 }
             });
         }

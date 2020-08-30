@@ -1,6 +1,7 @@
 package com.example.book_android.ui.bookshelf;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.book_android.MainActivity;
 import com.example.book_android.R;
+import com.example.book_android.RecordActivity;
 import com.example.book_android.dataclass.BookshelfItem;
 
 import java.util.ArrayList;
@@ -52,6 +54,17 @@ public class BookshelfFragment extends Fragment {
         recyclerView = root.findViewById(R.id.bookshelf_recycler);
         initData();
         BookshelfVerticalAdapter adapter = new BookshelfVerticalAdapter(getContext(), allList);
+        adapter.setOnRecordBtnClickListener2(new BookshelfVerticalAdapter.OnRecordBtnClickListener2() {
+            @Override
+            public void onRecordBtnClick2(BookshelfItem item) {
+                int img = item.getImg();
+                String title = item.getTitle();
+                Intent intent = new Intent(getContext(), RecordActivity.class);
+                intent.putExtra("bookImg", img);
+                intent.putExtra("bookTitle", title);
+                startActivity(intent);
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
         if(adapter.getItemCount() < 3){
@@ -65,14 +78,14 @@ public class BookshelfFragment extends Fragment {
 
     private void initData(){
         ArrayList<BookshelfItem> list1 = new ArrayList<>();
-        list1.add(new BookshelfItem(R.drawable.bookimg_ex));
-        list1.add(new BookshelfItem(R.drawable.bookimg_ex1));
-        list1.add(new BookshelfItem(R.drawable.bookimg_ex));
+        list1.add(new BookshelfItem(R.drawable.bookimg_ex, "만남은 지겹고 이별은 지쳤다"));
+        list1.add(new BookshelfItem(R.drawable.bookimg_ex1,"돈의 속성"));
+        list1.add(new BookshelfItem(R.drawable.bookimg_ex,"만남은 지겹고 이별은 지쳤다"));
         allList.add(list1);
 
         ArrayList<BookshelfItem> list2 = new ArrayList<>();
-        list2.add(new BookshelfItem(R.drawable.bookimg_ex));
-        list2.add(new BookshelfItem(R.drawable.bookimg_ex1));
+        list2.add(new BookshelfItem(R.drawable.bookimg_ex,"만남은 지겹고 이별은 지쳤다"));
+        list2.add(new BookshelfItem(R.drawable.bookimg_ex1,"돈의 속성"));
         allList.add(list2);
     }
 }

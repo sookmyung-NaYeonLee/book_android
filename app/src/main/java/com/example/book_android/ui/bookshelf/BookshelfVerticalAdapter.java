@@ -1,6 +1,7 @@
 package com.example.book_android.ui.bookshelf;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +12,25 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.book_android.R;
+import com.example.book_android.RecordActivity;
 import com.example.book_android.dataclass.BookshelfItem;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class BookshelfVerticalAdapter extends RecyclerView.Adapter<BookshelfVerticalAdapter.ViewHolder> {
 
     private ArrayList<ArrayList<BookshelfItem>> mDataList;
     private Context context;
+
+    private OnRecordBtnClickListener2 mListener = null ;
+
+    public interface OnRecordBtnClickListener2 {
+        void onRecordBtnClick2(BookshelfItem item) ;
+    }
+
+    public void setOnRecordBtnClickListener2(OnRecordBtnClickListener2 listener) {
+        this.mListener = listener ;
+    }
 
     public BookshelfVerticalAdapter(Context context, ArrayList<ArrayList<BookshelfItem>> data){
         mDataList = data;
@@ -62,6 +73,12 @@ public class BookshelfVerticalAdapter extends RecyclerView.Adapter<BookshelfVert
         BookshelfHorizontalAdapter adapter = new BookshelfHorizontalAdapter(list);
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         holder.recyclerView.setAdapter(adapter);
+        adapter.setOnRecordBtnClickListener(new BookshelfHorizontalAdapter.OnRecordBtnClickListener() {
+            @Override
+            public void onRecordBtnClick(View v, int position, BookshelfItem item) {
+                mListener.onRecordBtnClick2(item);
+            }
+        });
     }
 
     @Override

@@ -49,4 +49,7 @@
 
     // Bookshelf Fragment
     <string name="record_title">기록하기</string>
+
+    // RecordActivity
+    <string name="edit_record">수정</string>
 </resources>
