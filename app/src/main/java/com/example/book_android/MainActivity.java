@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import com.example.book_android.retrofit.RetrofitManager;
 import com.google.android.material.navigation.NavigationView;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
@@ -31,6 +32,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -41,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText searchEdit;
     private TextView toolbarTitle;
     private MenuItem searchBtn;
+    private String uid;
 
     private int isHomeFirst = 0;
 
@@ -103,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
     //User 이름, 프로필사진 setting
     private void setUserData(){
         SharedPreferences userPref = getSharedPreferences("userPref", MODE_PRIVATE);
+        uid = userPref.getString("uid","");
         String userName = userPref.getString("userName", "User");
         String userImg = userPref.getString("userImg", null);
         TextView nameTxt = headerView.findViewById(R.id.userName_textView);
@@ -178,7 +186,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Long result) {
                 Log.i("KAKAO_API", "연결 끊기 성공. id: " + result);
+                retrofitDeleteUser(uid);
                 redirectLoginActivity();
+            }
+        });
+    }
+
+    //탈퇴 시 서버에서 유저정보 삭제
+    private void retrofitDeleteUser(String uid){
+        Call<ResponseBody> call = RetrofitManager.createApi().deleteUser(uid);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+                    Log.d("retrofitDeleteUser", "정상적으로 삭제되었습니다.");
+                }else{
+                    Log.d("retrofitDeleteUser", "삭제 실패하였습니다: "+response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d("retrofitDeleteUser", t.toString());
             }
         });
     }

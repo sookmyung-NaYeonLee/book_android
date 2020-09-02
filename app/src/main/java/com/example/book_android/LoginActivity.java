@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.book_android.retrofit.RetrofitManager;
+import com.example.book_android.retrofit.retrofitdata.RequestUsersPost;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
@@ -28,10 +30,15 @@ import com.kakao.util.exception.KakaoException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class LoginActivity extends AppCompatActivity {
 
     private Session session;
     private Button loginBtn;
+    private String nickname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,15 +114,18 @@ public class LoginActivity extends AppCompatActivity {
                         // 프로필 이름
                         Profile profile = kakaoAccount.getProfile();
                         if (profile != null) {
-                            Log.d("KAKAO_API", "nickname: "+profile.getNickname());
+                            nickname = profile.getNickname();
+                            Log.d("KAKAO_API", "nickname: "+nickname);
                             Log.d("KAKAO_API", "thumbnail image: " + profile.getThumbnailImageUrl());
                             SharedPreferences userPref = getSharedPreferences("userPref", MODE_PRIVATE);
                             SharedPreferences.Editor editor = userPref.edit();
-                            editor.putString("userName", profile.getNickname());
+                            editor.putString("uid", uid);
+                            editor.putString("userName", nickname);
                             editor.putString("userImg", profile.getThumbnailImageUrl());
                             editor.commit();
                         }
                     }
+                    retrofitPostUser(uid, nickname);
                     redirectMainActivity();
                 }
             });
@@ -143,6 +153,27 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    //서버에 유저정보 저장
+    private void retrofitPostUser(String uid, String name){
+        RequestUsersPost user = new RequestUsersPost(uid, name);
+        Call<RequestUsersPost> call = RetrofitManager.createApi().postUser(user);
+        call.enqueue(new Callback<RequestUsersPost>(){
+            @Override
+            public void onResponse(Call<RequestUsersPost> call, Response<RequestUsersPost> response) {
+                if(response.isSuccessful()){
+                    Log.d("RetrofitPostUser","서버에 값을 전달했습니다.");
+                }else{
+                    Log.d("RetrofitPostUser","서버에 값 전달을 실패했습니다 : "+response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RequestUsersPost> call, Throwable t) {
+                Log.d("RetrofitPostUser","서버와 통신중 에러가 발생했습니다 : "+t.toString());
+            }
+        });
     }
 
     //해시키

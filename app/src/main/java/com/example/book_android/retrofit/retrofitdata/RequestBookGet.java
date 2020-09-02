@@ -4,9 +4,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class RequestBookGet {
-    @SerializedName("Bid")
+    @SerializedName("bid")
     @Expose
-    private String Bid;
+    private String bid;
 
     @SerializedName("name")
     @Expose
@@ -28,32 +28,32 @@ public class RequestBookGet {
     @Expose
     private String description;
 
-    @SerializedName("chapter")
+    @SerializedName("list")
     @Expose
-    private String chapter;
+    private String list;
 
     @SerializedName("img_url")
     @Expose
     private String img_url;
 
-    @SerializedName("page")
+    @SerializedName("pages")
     @Expose
-    private String page;
+    private String pages;
 
-    public RequestBookGet(String bid, String name, String author, String publisher, String price, String description, String chapter, String img_url, String page) {
-        Bid = bid;
+    public RequestBookGet(String bid, String name, String author, String publisher, String price, String description, String list, String img_url, String pages) {
+        this.bid = bid;
         this.name = name;
         this.author = author;
         this.publisher = publisher;
         this.price = price;
         this.description = description;
-        this.chapter = chapter;
+        this.list = list;
         this.img_url = img_url;
-        this.page = page;
+        this.pages = pages;
     }
 
     public String getBid() {
-        return Bid;
+        return bid;
     }
 
     public String getName() {
@@ -76,15 +76,15 @@ public class RequestBookGet {
         return description;
     }
 
-    public String getChapter() {
-        return chapter;
+    public String getList() {
+        return list;
     }
 
     public String getImg_url() {
         return img_url;
     }
 
-    public String getPage() {
-        return page;
+    public String getPages() {
+        return pages;
     }
 }
