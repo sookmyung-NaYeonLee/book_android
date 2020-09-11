@@ -34,10 +34,10 @@
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/title_text_size"
                 android:hint="@string/search_hint"
-                android:inputType="textNoSuggestions|textVisiblePassword"
+                android:inputType="textNoSuggestions"
                 android:textColorHint="#D5D5D5"
                 android:singleLine="true"
-                android:imeOptions="actionSearch" />
+                android:imeOptions="actionSearch"/>
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>

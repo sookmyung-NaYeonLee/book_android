@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="370dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp">
+    
+    <ImageView
+        android:id="@+id/search_book_img"
+        android:layout_width="80dp"
+        android:layout_height="120dp"
+        android:src="@drawable/bookimg_ex"
+        android:layout_marginStart="15dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toEndOf="@id/search_book_img"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/line">
+
+        <TextView
+            android:id="@+id/search_book_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="만남은 지겹고 이별은 지쳤다"
+            android:textSize="16sp"
+            android:textColor="@color/colorBlack" />
+
+        <TextView
+            android:id="@+id/search_book_writer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="색과 체" />
+
+        <TextView
+            android:id="@+id/search_book_publisher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="떠오름" />
+
+        <TextView
+            android:id="@+id/search_book_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="12420원"
+            android:textColor="@color/colorBlack"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:src="@drawable/line"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/search_book_img"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

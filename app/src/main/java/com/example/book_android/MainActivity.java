@@ -1,13 +1,16 @@
 package com.example.book_android;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,6 +18,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import com.example.book_android.retrofit.RetrofitManager;
+import com.example.book_android.retrofit.retrofitdata.RequestBookGet;
+import com.example.book_android.ui.home.HomeFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
@@ -24,6 +29,7 @@ import com.kakao.usermgmt.callback.UnLinkResponseCallback;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -31,6 +37,8 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import java.util.ArrayList;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -45,11 +53,13 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private ActionBar ab;
     private EditText searchEdit;
-    private TextView toolbarTitle;
+    private TextView toolbarTitle, noDataText;
     private MenuItem searchBtn;
     private String uid;
-
+    
     private int isHomeFirst = 0;
+
+    private ArrayList<RequestBookGet> searchList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         headerView = navigationView.getHeaderView(0);
-
         init();
     }
 
@@ -81,14 +90,49 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         searchBtn = menu.findItem(R.id.action_search);
-        /*
-        // 검색 버튼 클릭 시 searchview 길이 꽉차게 늘려줌
-        SearchView searchView = (SearchView)menu.findItem(R.id.action_search).getActionView();
-        searchView.setMaxWidth(Integer.MAX_VALUE);
-        // 검색 버튼 클릭 시 searchview 에 힌트 추가
-        searchView.setQueryHint("도서명으로 검색합니다.");
-        */
+        searchBtn.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                noDataText = findViewById(R.id.no_data_text);
+                retrofitGetBookSearch();
+                Handler mHandler = new Handler();
+                mHandler.postDelayed(new Runnable()  {
+                    public void run() {
+                        // 시간 지난 후 실행할 코딩
+                        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+                        ((HomeFragment)fragment.getChildFragmentManager().getFragments().get(0)).changeRecyclerView(searchList);
+                        if(searchList.size() != 0){
+                            noDataText.setVisibility(View.GONE);
+                        }else{
+                            noDataText.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }, 500);
+                hideKeyboard();
+                return true;
+            }
+        });
         return true;
+    }
+
+    private void retrofitGetBookSearch(){
+        Call<ArrayList<RequestBookGet>> call = RetrofitManager.createApi().getBookSearch(searchEdit.getText().toString());
+        call.enqueue(new Callback<ArrayList<RequestBookGet>>() {
+            @Override
+            public void onResponse(Call<ArrayList<RequestBookGet>> call, Response<ArrayList<RequestBookGet>> response) {
+                if(response.isSuccessful()){
+                    searchList = response.body();
+                }else{
+                    Log.d("retrofitGetBookSearch", "검색 실패.");
+                    searchList = new ArrayList<>();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<RequestBookGet>> call, Throwable t) {
+                Log.d("retrofitGetBookSearch", "서버와 통신 중 에러가 발생했습니다. "+t.toString());
+            }
+        });
     }
 
     //뒤로가기 버튼 위해서
@@ -210,6 +254,15 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("retrofitDeleteUser", t.toString());
             }
         });
+    }
+
+    public void setSearchEditClear(){
+        searchEdit.setText("");
+    }
+
+    public void hideKeyboard(){
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(searchEdit.getWindowToken(), 0);
     }
 
     public void setToolbarTitle(String title){

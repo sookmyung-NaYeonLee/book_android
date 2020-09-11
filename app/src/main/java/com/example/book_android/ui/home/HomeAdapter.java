@@ -25,8 +25,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private ArrayList<HomeItem> mData = null;
 
     private Bitmap bitmap;
-    //private String img;
-    private int img;
+    private String imgUrl;
     // 리스너 객체 참조를 저장하는 변수
     private OnItemClickListener mListener = null ;
 
@@ -85,14 +84,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     // onBindViewHolder() - position에 해당하는 데이터를 뷰홀더의 아이템뷰에 표시.
     @Override
     public void onBindViewHolder(HomeAdapter.ViewHolder holder, int position) {
-        img = mData.get(position).getBookImg();
-        if(img == 0){
-            holder.bookImg.setImageResource(R.drawable.bookimg_ex);
+        imgUrl = mData.get(position).getBookImg();
+        if(imgUrl == null){
+            //holder.bookImg.setImageResource(R.drawable.bookimg_ex);
         }
         else{
-            //downloadProfile();
-            //holder.bookImg.setImageBitmap(bitmap);
-            holder.bookImg.setImageResource(img);
+            downloadProfile();
+            holder.bookImg.setImageBitmap(bitmap);
         }
         String title = mData.get(position).getBookTitle();
         String writer = mData.get(position).getWriter();
@@ -112,7 +110,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             @Override
             public void run() {
                 try{
-                    URL url = new URL("http://52.79.242.93:8000/media/userprofile/"+img);
+                    URL url = new URL(imgUrl);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setDoInput(true);
                     conn.connect();

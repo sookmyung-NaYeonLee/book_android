@@ -13,7 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SearchActivity"></activity>
         <activity android:name=".RecordActivity" />
         <activity android:name=".DetailActivity" /> <!-- 카카오톡 메타데이터 -->
         <meta-data

@@ -1,17 +1,23 @@
 package com.example.book_android.dataclass;
 
 public class HomeItem {
-    private int bookImg;
+    private String bid;
+    private String bookImg;
     private String bookTitle;
     private String writer;
 
-    public HomeItem(int bookImg, String bookTitle, String writer) {
+    public HomeItem(String bid, String bookImg, String bookTitle, String writer) {
+        this.bid = bid;
         this.bookImg = bookImg;
         this.bookTitle = bookTitle;
         this.writer = writer;
     }
 
-    public int getBookImg() {
+    public String getBid() {
+        return bid;
+    }
+
+    public String getBookImg() {
         return bookImg;
     }
 
