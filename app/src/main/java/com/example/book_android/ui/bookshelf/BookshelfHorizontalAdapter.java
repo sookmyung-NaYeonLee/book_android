@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.example.book_android.MainActivity;
 import com.example.book_android.R;
 import com.example.book_android.dataclass.BookshelfItem;
 
@@ -19,19 +21,27 @@ import java.util.ArrayList;
 public class BookshelfHorizontalAdapter extends RecyclerView.Adapter<BookshelfHorizontalAdapter.ViewHolder> {
 
     private ArrayList<BookshelfItem> mData;
+    private OnRecordBtnClickListener mListener = null;
+    private OnBookImgClickListener bListener = null;
+    private MainActivity activity;
 
-    BookshelfHorizontalAdapter(ArrayList<BookshelfItem> list){
+    BookshelfHorizontalAdapter(ArrayList<BookshelfItem> list, MainActivity activity){
         this.mData = list;
+        this.activity = activity;
     }
-
-    private OnRecordBtnClickListener mListener = null ;
 
     public interface OnRecordBtnClickListener {
-        void onRecordBtnClick(View v, int position, BookshelfItem item) ;
+        void onRecordBtnClick(View v, int position, BookshelfItem item);
     }
-
     public void setOnRecordBtnClickListener(OnRecordBtnClickListener listener) {
         this.mListener = listener ;
+    }
+
+    public interface OnBookImgClickListener{
+        void onBookImgClickListener(View v, int position, BookshelfItem item);
+    }
+    public void setOnBookImgClickListener(OnBookImgClickListener listener){
+        this.bListener = listener;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -42,6 +52,16 @@ public class BookshelfHorizontalAdapter extends RecyclerView.Adapter<BookshelfHo
             super(itemView);
             bookImg = itemView.findViewById(R.id.bookshelf_book_img);
             recordBtn = itemView.findViewById(R.id.bookshelf_record_btn);
+            bookImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int pos = getAdapterPosition();
+                    if(pos != RecyclerView.NO_POSITION){
+                        BookshelfItem item = mData.get(pos);
+                        bListener.onBookImgClickListener(view, pos, item);
+                    }
+                }
+            });
             recordBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -69,7 +89,8 @@ public class BookshelfHorizontalAdapter extends RecyclerView.Adapter<BookshelfHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BookshelfItem item = mData.get(position);
-        holder.bookImg.setImageResource(item.getImg());
+        String imgUrl = item.getImg_url();
+        Glide.with(activity).load(imgUrl).into(holder.bookImg);
     }
 
     @Override

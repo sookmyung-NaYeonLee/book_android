@@ -9,14 +9,14 @@
         android:layout_width="400dp"
         android:layout_height="200dp"
         android:overScrollMode="never"
-        android:background="@drawable/bookshelfone1"
+        android:background="@drawable/shelf3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
     <ImageView
         android:id="@+id/bookshelf_horizontal_img"
         android:layout_width="400dp"
         android:layout_height="200dp"
-        android:background="@drawable/bookshelfone1"
+        android:background="@drawable/shelf3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"/>

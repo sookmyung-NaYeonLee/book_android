@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.example.book_android.MainActivity;
 import com.example.book_android.R;
 import com.example.book_android.dataclass.BasketItem;
 
@@ -25,7 +27,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
 
     private ArrayList<BasketItem> mData = new ArrayList<>();
     private OnItemClickListener mListener = null;
-    Bitmap bitmap;
+    private MainActivity activity;
 
     public interface OnItemClickListener{
         void onItemClick(View v, int position);
@@ -60,8 +62,9 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
         }
     }
 
-    BasketAdapter(ArrayList<BasketItem> list){
+    BasketAdapter(ArrayList<BasketItem> list, MainActivity activity){
         mData = list;
+        this.activity = activity;
     }
 
     @NonNull
@@ -76,7 +79,13 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull BasketAdapter.ViewHolder holder, int position) {
-        // TODO: 2020/08/27  데이터 연결 시켜야함
+        BasketItem item = mData.get(position);
+        String imgUrl = item.getBookImg();
+        Glide.with(activity).load(imgUrl).into(holder.bookImg);
+        holder.title.setText(item.getBookTitle());
+        holder.writer.setText(item.getWriter());
+        holder.publisher.setText(item.getPublisher());
+        holder.publisher.setText(item.getPrice());
     }
 
     @Override
@@ -87,31 +96,5 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
     public void setData(ArrayList<BasketItem> list){
         mData = list;
         notifyDataSetChanged();
-    }
-
-    private void downloadUserDrawImg(final String img){
-        Thread thread = new Thread(){
-            @Override
-            public void run() {
-                try{
-                    URL url = new URL("http://52.79.242.93:8000/media/userimage/"+img);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setDoInput(true);
-                    conn.connect();
-                    InputStream is = conn.getInputStream();
-                    bitmap = BitmapFactory.decodeStream(is);
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
-
-            }
-        };
-        thread.start();
-        try{
-            thread.join();
-
-        }catch(InterruptedException e){
-            e.printStackTrace();
-        }
     }
 }

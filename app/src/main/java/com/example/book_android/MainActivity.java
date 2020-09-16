@@ -13,12 +13,14 @@ import android.view.Menu;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
 import com.example.book_android.retrofit.RetrofitManager;
 import com.example.book_android.retrofit.retrofitdata.RequestBookGet;
+import com.example.book_android.retrofit.retrofitdata.RequestBookshelfGet;
 import com.example.book_android.ui.home.HomeFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.kakao.network.ErrorResult;
@@ -27,6 +29,7 @@ import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.kakao.usermgmt.callback.UnLinkResponseCallback;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 
 import androidx.fragment.app.Fragment;
@@ -37,6 +40,9 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -50,12 +56,15 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private View headerView;
     private DrawerLayout drawer;
+    private Toolbar toolbar;
     private NavigationView navigationView;
     private ActionBar ab;
     private EditText searchEdit;
-    private TextView toolbarTitle, noDataText;
+    private TextView toolbarTitle, basketCntText, bookshelfCntText;
     private MenuItem searchBtn;
+    private LinearLayout noDataText;
     private String uid;
+    private int basketCnt = 0, bookshelfCnt = 0;
     
     private int isHomeFirst = 0;
 
@@ -65,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -93,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         searchBtn.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                noDataText = findViewById(R.id.no_data_text);
+                noDataText = findViewById(R.id.no_data);
                 retrofitGetBookSearch();
                 Handler mHandler = new Handler();
                 mHandler.postDelayed(new Runnable()  {
@@ -147,6 +156,8 @@ public class MainActivity extends AppCompatActivity {
         searchEdit = findViewById(R.id.search_edittext);
         toolbarTitle = findViewById(R.id.toolbar_title);
         toolbarTitle.setVisibility(View.GONE);
+        basketCntText = headerView.findViewById(R.id.basket_cnt_textView);
+        bookshelfCntText = headerView.findViewById(R.id.bookshelf_cnt_textView);
         setUserData();
         setNavHeaderListener();
     }
@@ -165,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //로그아웃, 회원탈퇴 리스너
+    //로그아웃, 회원탈퇴 리스너 / 드로어 오픈 시 리스너
     private void setNavHeaderListener(){
         TextView logout = headerView.findViewById(R.id.logout_btn);
         TextView withdrawal = headerView.findViewById(R.id.withdrawal_btn);
@@ -194,6 +205,41 @@ public class MainActivity extends AppCompatActivity {
                 builder.show();
             }
         });
+        //드로어 오픈 리스너 -> 찜, 내책장 count 갱신
+        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.drawer_open, R.string.drawer_close){
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                retrofitGetBookshelfCount(uid);
+                setBasketCount();
+            }
+        };
+        drawer.setDrawerListener(drawerToggle);
+    }
+
+    private void setBasketCount(){
+        ArrayList<String> basketList = getStringArrayPref("bidList");
+        basketCnt = basketList.size();
+        basketCntText.setText("찜 "+basketCnt);
+    }
+
+    //SharedPreferences 에서 찜 리스트 가져오기
+    private ArrayList<String> getStringArrayPref(String key) {
+        SharedPreferences prefs = getSharedPreferences("basketPref", MODE_PRIVATE);
+        String json = prefs.getString(key, null);
+        ArrayList<String> urls = new ArrayList<>();
+        if (json != null) {
+            try {
+                JSONArray a = new JSONArray(json);
+                for (int i = 0; i < a.length(); i++) {
+                    String url = a.optString(i);
+                    urls.add(url);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return urls;
     }
 
     //LoginActivity로 돌아가기
@@ -256,6 +302,27 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //내책장 개수 가져오기
+    private void retrofitGetBookshelfCount(final String uid){
+        Call<ArrayList<RequestBookshelfGet>> call = RetrofitManager.createApi().getBookshelfTotal(uid);
+        call.enqueue(new Callback<ArrayList<RequestBookshelfGet>>() {
+            @Override
+            public void onResponse(Call<ArrayList<RequestBookshelfGet>> call, Response<ArrayList<RequestBookshelfGet>> response) {
+                if(response.isSuccessful()){
+                    bookshelfCnt = response.body().size();
+                    bookshelfCntText.setText("나만의 책장 "+bookshelfCnt);
+                }else{
+                    Log.d("retrofitGetBookshelfCnt", "Bookshelf table에서 데이터 가져오기 실패.");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<RequestBookshelfGet>> call, Throwable t) {
+                Log.d("retrofitGetBookshelfCnt","서버와 통신중 에러가 발생했습니다 : "+t.toString());
+            }
+        });
+    }
+
     public void setSearchEditClear(){
         searchEdit.setText("");
     }
@@ -281,5 +348,9 @@ public class MainActivity extends AppCompatActivity {
             searchEdit.setVisibility(View.VISIBLE);
             searchBtn.setVisible(true);
         }
+    }
+
+    public String getUid(){
+        return uid;
     }
 }

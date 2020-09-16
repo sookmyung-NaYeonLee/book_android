@@ -8,9 +8,9 @@ public class RequestBookGet {
     @Expose
     private String bid;
 
-    @SerializedName("name")
+    @SerializedName("title")
     @Expose
-    private String name;
+    private String title;
 
     @SerializedName("author")
     @Expose
@@ -28,10 +28,6 @@ public class RequestBookGet {
     @Expose
     private String description;
 
-    @SerializedName("list")
-    @Expose
-    private String list;
-
     @SerializedName("img_url")
     @Expose
     private String img_url;
@@ -40,14 +36,13 @@ public class RequestBookGet {
     @Expose
     private String pages;
 
-    public RequestBookGet(String bid, String name, String author, String publisher, String price, String description, String list, String img_url, String pages) {
+    public RequestBookGet(String bid, String title, String author, String publisher, String price, String description, String img_url, String pages) {
         this.bid = bid;
-        this.name = name;
+        this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.price = price;
         this.description = description;
-        this.list = list;
         this.img_url = img_url;
         this.pages = pages;
     }
@@ -56,8 +51,8 @@ public class RequestBookGet {
         return bid;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
     public String getAuthor() {
@@ -74,10 +69,6 @@ public class RequestBookGet {
 
     public String getDescription() {
         return description;
-    }
-
-    public String getList() {
-        return list;
     }
 
     public String getImg_url() {

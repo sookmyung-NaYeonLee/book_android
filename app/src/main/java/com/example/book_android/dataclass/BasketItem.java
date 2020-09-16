@@ -1,13 +1,15 @@
 package com.example.book_android.dataclass;
 
 public class BasketItem {
-    private int bookImg;
+    private String bid;
+    private String bookImg;
     private String bookTitle;
     private String writer;
     private String publisher;
     private String price;
 
-    public BasketItem(int bookImg, String bookTitle, String writer, String publisher, String price) {
+    public BasketItem(String bid, String bookImg, String bookTitle, String writer, String publisher, String price) {
+        this.bid = bid;
         this.bookImg = bookImg;
         this.bookTitle = bookTitle;
         this.writer = writer;
@@ -15,7 +17,11 @@ public class BasketItem {
         this.price = price;
     }
 
-    public int getBookImg() {
+    public String getBid() {
+        return bid;
+    }
+
+    public String getBookImg() {
         return bookImg;
     }
 

@@ -15,17 +15,18 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginStart="20dp"
         app:layout_constraintStart_toEndOf="@id/basket_book_img"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/line">
+        app:layout_constraintBottom_toBottomOf="@id/line"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
             android:id="@+id/basket_book_title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="만남은 지겹고 이별은 지쳤다"
             android:textSize="16sp"
@@ -33,19 +34,19 @@
 
         <TextView
             android:id="@+id/basket_book_writer"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="색과 체" />
 
         <TextView
             android:id="@+id/basket_book_publisher"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="떠오름" />
 
         <TextView
             android:id="@+id/basket_book_price"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="12420원"
             android:textColor="@color/colorBlack"/>

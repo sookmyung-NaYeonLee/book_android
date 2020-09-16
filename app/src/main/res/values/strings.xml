@@ -14,6 +14,8 @@
     <string name="menu_basket">찜</string>
     <string name="menu_logout">로그아웃</string>
     <string name="menu_withdrawal">회원탈퇴</string>
+    <string name="drawer_open">열림</string>
+    <string name="drawer_close">닫힘</string>
 
     // MainActivity
     <string name="search_hint">도서명으로 검색하세요.</string>
@@ -54,5 +56,6 @@
     <string name="record_title">기록하기</string>
 
     // RecordActivity
-    <string name="edit_record">수정</string>
+    <string name="edit_record">저장하기</string>
+    <string name="look_detail">상세보기</string>
 </resources>

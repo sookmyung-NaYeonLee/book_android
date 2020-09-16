@@ -12,7 +12,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="35dp">
+        android:layout_marginTop="30dp">
         <ImageView
             android:id="@+id/bookshelf_book_img"
             android:layout_width="90dp"
@@ -20,10 +20,12 @@
             android:src="@drawable/bookimg_ex"/>
         <TextView
             android:id="@+id/bookshelf_record_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:text="@string/record_title"
-            android:layout_marginTop="5dp"/>
+            android:textColor="@color/colorPoint"
+            android:gravity="center"
+            android:layout_marginTop="15dp"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

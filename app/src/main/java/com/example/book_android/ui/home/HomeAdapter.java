@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.example.book_android.MainActivity;
 import com.example.book_android.R;
 import com.example.book_android.dataclass.HomeItem;
 
@@ -24,8 +26,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     private ArrayList<HomeItem> mData = null;
 
-    private Bitmap bitmap;
-    private String imgUrl;
+    private MainActivity activity;
     // 리스너 객체 참조를 저장하는 변수
     private OnItemClickListener mListener = null ;
 
@@ -65,8 +66,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         }
     }
 
-    HomeAdapter(ArrayList<HomeItem> list){
+    HomeAdapter(ArrayList<HomeItem> list, MainActivity activity){
         mData = list;
+        this.activity = activity;
     }
 
     // onCreateViewHolder() - 아이템 뷰를 위한 뷰홀더 객체 생성하여 리턴.
@@ -84,14 +86,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     // onBindViewHolder() - position에 해당하는 데이터를 뷰홀더의 아이템뷰에 표시.
     @Override
     public void onBindViewHolder(HomeAdapter.ViewHolder holder, int position) {
-        imgUrl = mData.get(position).getBookImg();
-        if(imgUrl == null){
-            //holder.bookImg.setImageResource(R.drawable.bookimg_ex);
-        }
-        else{
-            downloadProfile();
-            holder.bookImg.setImageBitmap(bitmap);
-        }
+        String imgUrl = mData.get(position).getBookImg();
+        Glide.with(activity).load(imgUrl).into(holder.bookImg);
         String title = mData.get(position).getBookTitle();
         String writer = mData.get(position).getWriter();
         holder.bookTitle.setText(title);
@@ -103,31 +99,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return mData.size();
-    }
-
-    private void downloadProfile(){
-        Thread thread = new Thread(){
-            @Override
-            public void run() {
-                try{
-                    URL url = new URL(imgUrl);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setDoInput(true);
-                    conn.connect();
-                    InputStream is = conn.getInputStream();
-                    bitmap = BitmapFactory.decodeStream(is);
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
-
-            }
-        };
-        thread.start();
-        try{
-            thread.join();
-        }catch(InterruptedException e){
-            e.printStackTrace();
-        }
     }
 
     public void setData(ArrayList<HomeItem> list){

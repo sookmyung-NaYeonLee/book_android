@@ -1,7 +1,6 @@
 package com.example.book_android.ui.bookshelf;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.book_android.MainActivity;
 import com.example.book_android.R;
-import com.example.book_android.RecordActivity;
 import com.example.book_android.dataclass.BookshelfItem;
 
 import java.util.ArrayList;
@@ -21,20 +20,29 @@ public class BookshelfVerticalAdapter extends RecyclerView.Adapter<BookshelfVert
 
     private ArrayList<ArrayList<BookshelfItem>> mDataList;
     private Context context;
+    private MainActivity activity;
 
-    private OnRecordBtnClickListener2 mListener = null ;
+    private OnRecordBtnClickListener2 mListener = null;
+    private OnBookImgClickListener2 bListener = null;
 
     public interface OnRecordBtnClickListener2 {
         void onRecordBtnClick2(BookshelfItem item) ;
     }
-
     public void setOnRecordBtnClickListener2(OnRecordBtnClickListener2 listener) {
         this.mListener = listener ;
     }
 
-    public BookshelfVerticalAdapter(Context context, ArrayList<ArrayList<BookshelfItem>> data){
+    public interface OnBookImgClickListener2 {
+        void onBookImgClick2(BookshelfItem item) ;
+    }
+    public void setOnBookImgClickListener2(OnBookImgClickListener2 listener) {
+        this.bListener = listener ;
+    }
+
+    public BookshelfVerticalAdapter(Context context, MainActivity activity, ArrayList<ArrayList<BookshelfItem>> data){
         mDataList = data;
         this.context = context;
+        this.activity = activity;
     }
 
     public void setmDataList(ArrayList<ArrayList<BookshelfItem>> list){
@@ -70,9 +78,15 @@ public class BookshelfVerticalAdapter extends RecyclerView.Adapter<BookshelfVert
         if(list.size() == 0){
             holder.background.setVisibility(View.VISIBLE);
         }
-        BookshelfHorizontalAdapter adapter = new BookshelfHorizontalAdapter(list);
+        BookshelfHorizontalAdapter adapter = new BookshelfHorizontalAdapter(list, activity);
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         holder.recyclerView.setAdapter(adapter);
+        adapter.setOnBookImgClickListener(new BookshelfHorizontalAdapter.OnBookImgClickListener() {
+            @Override
+            public void onBookImgClickListener(View v, int position, BookshelfItem item) {
+                bListener.onBookImgClick2(item);
+            }
+        });
         adapter.setOnRecordBtnClickListener(new BookshelfHorizontalAdapter.OnRecordBtnClickListener() {
             @Override
             public void onRecordBtnClick(View v, int position, BookshelfItem item) {

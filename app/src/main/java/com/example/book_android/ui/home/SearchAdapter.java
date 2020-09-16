@@ -1,8 +1,6 @@
 package com.example.book_android.ui.home;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.example.book_android.MainActivity;
 import com.example.book_android.R;
 import com.example.book_android.retrofit.retrofitdata.RequestBookGet;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -28,7 +24,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     private OnItemClickListener mListener = null;
 
     private String imgUrl;
-    private Bitmap bitmap;
+    private MainActivity activity;
 
     public interface OnItemClickListener{
         void onItemClick(View v, int position);
@@ -63,8 +59,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         }
     }
 
-    SearchAdapter(ArrayList<RequestBookGet> list){
+    SearchAdapter(ArrayList<RequestBookGet> list, MainActivity activity){
         mData = list;
+        this.activity = activity;
     }
 
     @NonNull
@@ -80,9 +77,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull SearchAdapter.ViewHolder holder, int position) {
         imgUrl = mData.get(position).getImg_url();
-        downloadProfile();
-        holder.bookImg.setImageBitmap(bitmap);
-        holder.title.setText(mData.get(position).getName());
+        Glide.with(activity).load(imgUrl).into(holder.bookImg);
+        holder.title.setText(mData.get(position).getTitle());
         holder.writer.setText(mData.get(position).getAuthor());
         holder.publisher.setText(mData.get(position).getPublisher());
         holder.price.setText(mData.get(position).getPrice());
@@ -96,30 +92,5 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     public void setmData(ArrayList<RequestBookGet> list){
         mData = list;
         notifyDataSetChanged();
-    }
-
-    private void downloadProfile(){
-        Thread thread = new Thread(){
-            @Override
-            public void run() {
-                try{
-                    URL url = new URL(imgUrl);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setDoInput(true);
-                    conn.connect();
-                    InputStream is = conn.getInputStream();
-                    bitmap = BitmapFactory.decodeStream(is);
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
-
-            }
-        };
-        thread.start();
-        try{
-            thread.join();
-        }catch(InterruptedException e){
-            e.printStackTrace();
-        }
     }
 }
