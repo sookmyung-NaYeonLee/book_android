@@ -1,9 +1,11 @@
 package com.example.book_android;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -108,7 +110,21 @@ public class DetailActivity extends AppCompatActivity {
                     RequestBookshelfPost item = new RequestBookshelfPost("", uid, bid);
                     retrofitPostBookshelf(item);
                 }else{
-                    retrofitDeleteBookshelf(uid, bid);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
+                    builder.setMessage("나만의 책장에서 삭제하면 해당 도서의 기록이 사라집니다.");
+                    builder.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            retrofitDeleteBookshelf(uid, bid);
+                        }
+                    });
+                    builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            bookshelfCheck.setChecked(true);
+                        }
+                    });
+                    builder.show();
                 }
             }
         });
