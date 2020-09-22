@@ -2,13 +2,16 @@ package com.example.book_android;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -19,6 +22,7 @@ import com.example.book_android.retrofit.RetrofitManager;
 import com.example.book_android.retrofit.retrofitdata.RequestBookGet;
 import com.example.book_android.retrofit.retrofitdata.RequestBookshelfGet;
 import com.example.book_android.retrofit.retrofitdata.RequestBookshelfPost;
+import com.example.book_android.retrofit.retrofitdata.RequestResultGet;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,7 +42,8 @@ public class DetailActivity extends AppCompatActivity {
     private CheckBox basketCheck, bookshelfCheck;
 
     private String imgUrl, bid, uid;
-    private int requestCode;
+    private int requestCode, value = 0;
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,6 +192,7 @@ public class DetailActivity extends AppCompatActivity {
         uid = userPref.getString("uid","");
         setBasketChecked(bid);
         setBookshelfChecked(uid, bid);
+        setProgressResult(bid);
     }
 
     private void setBasketChecked(String bid){
@@ -215,6 +221,45 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<RequestBookshelfGet> call, Throwable t) {
                 Log.d("setBookshelfChecked", "서버와 통신중 에러가 발생했습니다 : "+t.toString());
+            }
+        });
+    }
+
+    private void setProgressResult(String bid){
+        Call<RequestResultGet> call = RetrofitManager.createApi().getResult(bid);
+        call.enqueue(new Callback<RequestResultGet>() {
+            @Override
+            public void onResponse(Call<RequestResultGet> call, Response<RequestResultGet> response) {
+                if(response.isSuccessful()){
+                    Log.d("setProgressResult", "results table에서 가져오기 성공.");
+                    final int resultValue = (int)(response.body().getGood())*100;
+                    Thread t = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            while(value + 100 < resultValue){
+                                value += 50;
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() { // 화면에 변경하는 작업을 구현
+                                        progressBar.setProgress(value);
+                                    }
+                                });
+                                try {
+                                    Thread.sleep(2); // 시간지연
+                                } catch (InterruptedException e) {}
+                            }
+                            progressBar.setProgress(resultValue);
+                        }
+                    });
+                    t.start();
+                }else{
+                    Log.d("setProgressResult", "results table에서 가져오기 실패.");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RequestResultGet> call, Throwable t) {
+                Log.d("setProgressResult", "서버와 통신중 에러가 발생했습니다 : "+t.toString());
             }
         });
     }

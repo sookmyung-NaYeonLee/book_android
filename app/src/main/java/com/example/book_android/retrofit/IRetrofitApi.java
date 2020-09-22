@@ -4,6 +4,7 @@ import com.example.book_android.retrofit.retrofitdata.RequestBestsellerGet;
 import com.example.book_android.retrofit.retrofitdata.RequestBookGet;
 import com.example.book_android.retrofit.retrofitdata.RequestBookshelfPost;
 import com.example.book_android.retrofit.retrofitdata.RequestBookshelfGet;
+import com.example.book_android.retrofit.retrofitdata.RequestResultGet;
 import com.example.book_android.retrofit.retrofitdata.RequestUsersPost;
 
 import java.util.ArrayList;
@@ -70,4 +71,9 @@ public interface IRetrofitApi {
     //베스트셀러 30개 가져오기
     @GET("books/best/")
     Call<ArrayList<RequestBestsellerGet>> getBestseller();
+    //각각 책 분석 결과 가져오기
+    @GET("results/{bid}")
+    Call<RequestResultGet> getResult(
+            @Path("bid") String bid
+    );
 }

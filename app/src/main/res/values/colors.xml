@@ -9,6 +9,6 @@
     <color name="colorMain">#C8B59A</color>
     <color name="colorPoint">#262626</color>
     <color name="colorGray">#D5D5D5</color>
-    <color name="progressbarLike">#101957</color>
-    <color name="progressbarHate">#BC2828</color>
+    <color name="progressbarLike">#191970</color>
+    <color name="progressbarHate">#B22222</color>
 </resources>
