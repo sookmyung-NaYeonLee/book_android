@@ -17,8 +17,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/bestseller"
-            android:textSize="@dimen/title_text_size"
+            android:textSize="16dp"
             android:textColor="@color/colorPoint"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -36,8 +36,8 @@ import retrofit2.Response;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private ImageView backBtn, bookImg;
-    private TextView bookTitle, bookWriter, bookPublisher, bookPages, bookPrice, bookDescription;
+    private ImageView backBtn, bookImg, keywordImg;
+    private TextView bookTitle, bookWriter, bookPublisher, bookPages, bookPrice, bookDescription, goodText, badText;
     private ProgressBar progressBar;
     private CheckBox basketCheck, bookshelfCheck;
 
@@ -71,6 +71,9 @@ public class DetailActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.detail_progress);
         basketCheck = findViewById(R.id.basket_checkbox);
         bookshelfCheck = findViewById(R.id.bookshelf_checkbox);
+        keywordImg = findViewById(R.id.detail_keyword_img);
+        goodText = findViewById(R.id.detail_good);
+        badText = findViewById(R.id.detail_bad);
     }
 
     private void setListeners(){
@@ -188,8 +191,11 @@ public class DetailActivity extends AppCompatActivity {
         bid = intent.getStringExtra("bid");
         requestCode = intent.getIntExtra("requestCode", 0);
         retrofitGetBook(bid);
+
         SharedPreferences userPref = getSharedPreferences("userPref", MODE_PRIVATE);
         uid = userPref.getString("uid","");
+
+        Glide.with(this).load("http://203.252.195.63:8000/media/"+bid+".png").into(keywordImg);
         setBasketChecked(bid);
         setBookshelfChecked(uid, bid);
         setProgressResult(bid);
@@ -232,7 +238,10 @@ public class DetailActivity extends AppCompatActivity {
             public void onResponse(Call<RequestResultGet> call, Response<RequestResultGet> response) {
                 if(response.isSuccessful()){
                     Log.d("setProgressResult", "results table에서 가져오기 성공.");
+                    float resultValueFloat = response.body().getGood();
                     final int resultValue = (int)(response.body().getGood())*100;
+                    goodText.setText("추천("+resultValueFloat+"%)");
+                    badText.setText("비추천("+Math.round((100-resultValueFloat)*100)/100.0+"%)");
                     Thread t = new Thread(new Runnable() {
                         @Override
                         public void run() {

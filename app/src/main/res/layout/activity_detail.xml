@@ -63,8 +63,9 @@
                 android:layout_height="wrap_content"
                 android:text="만남은 지겹고 이별은 지쳤다"
                 android:textColor="@color/colorPoint"
-                android:textSize="17sp"
-                android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
+                android:textSize="16sp"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/detail_book_writer"
@@ -171,7 +172,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/good_title"
                 android:textSize="@dimen/title_text_size"
-                android:textColor="@color/colorPoint"/>
+                android:textColor="@color/colorPoint"
+                android:textStyle="bold"/>
             <ProgressBar
                 android:id="@+id/detail_progress"
                 android:layout_width="match_parent"
@@ -184,8 +186,10 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:layout_marginBottom="@dimen/activity_horizontal_margin">
                 <TextView
+                    android:id="@+id/detail_good"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/like"
@@ -193,6 +197,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:textSize="12dp"/>
                 <TextView
+                    android:id="@+id/detail_bad"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/hate"
@@ -200,13 +205,29 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:textSize="12dp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/keyword_title"
+                android:textSize="@dimen/title_text_size"
+                android:textColor="@color/colorPoint"
+                android:textStyle="bold"/>
+            <ImageView
+                android:id="@+id/detail_keyword_img"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:layout_gravity="center"/>
             
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/description_title"
                 android:textSize="@dimen/title_text_size"
-                android:textColor="@color/colorPoint"/>
+                android:textColor="@color/colorPoint"
+                android:textStyle="bold"/>
             <TextView
                 android:id="@+id/detail_description"
                 android:layout_width="match_parent"
