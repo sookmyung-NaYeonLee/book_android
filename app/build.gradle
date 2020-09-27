@@ -5,7 +5,7 @@ android {
     buildToolsVersion "30.0.0"
 
     defaultConfig {
-        applicationId "com.example.book_android"
+        applicationId "com.Bookey.book_android"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1

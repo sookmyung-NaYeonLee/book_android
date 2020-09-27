@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.book_android">
+    package="com.Bookey.book_android">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".kakaologin.GlobalApplication"
+        android:name="com.Bookey.book_android.kakaologin.GlobalApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_logo"
         android:label="@string/app_name"
@@ -13,17 +13,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".RecordActivity" />
-        <activity android:name=".DetailActivity" /> <!-- 카카오톡 메타데이터 -->
+        <activity android:name="com.Bookey.book_android.RecordActivity" />
+        <activity android:name="com.Bookey.book_android.DetailActivity" /> <!-- 카카오톡 메타데이터 -->
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.Bookey.book_android.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".LoginActivity">
+        <activity android:name="com.Bookey.book_android.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

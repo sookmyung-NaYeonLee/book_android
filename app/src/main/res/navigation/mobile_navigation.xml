@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.book_android.ui.home.HomeFragment"
+        android:name="com.Bookey.book_android.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home"/>
 
     <fragment
         android:id="@+id/nav_bookshelf"
-        android:name="com.example.book_android.ui.bookshelf.BookshelfFragment"
+        android:name="com.Bookey.book_android.ui.bookshelf.BookshelfFragment"
         android:label="@string/menu_bookshelf"
         tools:layout="@layout/fragment_bookshelf" />
 
     <fragment
         android:id="@+id/nav_basket"
-        android:name="com.example.book_android.ui.basket.BasketFragment"
+        android:name="com.Bookey.book_android.ui.basket.BasketFragment"
         android:label="@string/menu_basket"
         tools:layout="@layout/fragment_basket" />
 </navigation>
