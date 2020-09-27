@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.bookshelf.BookshelfFragment"
-    android:background="#E6DBCF">
+    android:background="#E6E0DA">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/bookshelf_recycler"

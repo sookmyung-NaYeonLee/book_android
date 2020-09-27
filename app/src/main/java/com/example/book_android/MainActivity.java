@@ -219,7 +219,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void setBasketCount(){
         ArrayList<String> basketList = getStringArrayPref("bidList");
-        basketCnt = basketList.size();
+        if(basketList != null) {
+            basketCnt = basketList.size();
+        }else{
+            basketCnt = 0;
+        }
         basketCntText.setText("찜 "+basketCnt);
     }
 
@@ -277,6 +281,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(Long result) {
                 Log.i("KAKAO_API", "연결 끊기 성공. id: " + result);
                 retrofitDeleteUser(uid);
+                deleteBasket();
                 redirectLoginActivity();
             }
         });
@@ -300,6 +305,13 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("retrofitDeleteUser", t.toString());
             }
         });
+    }
+
+    //탈퇴 시 찜 정보 삭제
+    private void deleteBasket(){
+        SharedPreferences prefs = getSharedPreferences("basketPref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear().commit();
     }
 
     //내책장 개수 가져오기

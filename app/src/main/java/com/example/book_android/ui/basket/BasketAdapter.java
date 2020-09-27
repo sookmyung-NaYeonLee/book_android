@@ -85,7 +85,7 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
         holder.title.setText(item.getBookTitle());
         holder.writer.setText(item.getWriter());
         holder.publisher.setText(item.getPublisher());
-        holder.publisher.setText(item.getPrice());
+        holder.price.setText(item.getPrice());
     }
 
     @Override
